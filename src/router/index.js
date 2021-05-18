@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
   {
     path: '/',
-    redirect: '/hello'
+    redirect: '/frame'
   },
   {
     path: "/login",
@@ -16,12 +16,33 @@ const routes = [
     component: () => import("@/components/HelloWorld")
   },
   {
-    path: "/Frame",
+    path: "/frame",
     name: "Frame",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ "../components/Frame"),
+    component: () => import("../components/Frame"),
+    children: [
+      {
+        path: '/selection',
+        name: 'Selection',
+        component: () => import("@/components/Selection")
+      },
+      {
+        path: '/drop',
+        name: 'Drop',
+        component: () => import("@/components/Drop")
+      },{
+        path: '/history',
+        name: 'History',
+        component: () => import("@/components/History")
+      },{
+        path: '/changeInfo',
+        name: 'ChangeInfo',
+        component: () => import("@/components/ChangeInfo")
+      },{
+        path: '/changePwd',
+        name: 'ChangePwd',
+        component: () => import("@/components/ChangePwd")
+      },
+    ]
   }
 ];
 

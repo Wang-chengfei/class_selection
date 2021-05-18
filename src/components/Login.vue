@@ -1,8 +1,9 @@
 <template>
   <div>
       <p>这是login</p>
-      <el-button type="primary" @click="toFrame">toFrame</el-button>
-      <el-button type="primary" @click="toHello">toHello</el-button>
+      <el-button type="primary" @click="changePage('Frame')">toFrame</el-button>
+      <el-button type="primary" @click="changePage('Hello')">toHello</el-button>
+      <el-button type="primary" @click="changePage('Drop')">toDrop</el-button>
   </div>
 </template>
 
@@ -13,33 +14,15 @@ export default {
   name:"Login",
   setup () {
     const router = useRouter()
-    const toFrame = (() => {
+    const changePage = ((destination) => {
       router.push({
-        name: 'Frame'
-      })
-    })
-    const toHello = (() => {
-      router.push({
-        name: 'Hello'
+        name: destination
       })
     })
     return {
-      toFrame,
-      toHello
+      changePage
     }
   },
-  // methods: {
-  //   toHello: function () {
-  //     router.push({
-  //       name: 'Hello'
-  //     })
-  //   },
-  //   toFrame: function () {
-  //     router.push({
-  //       name: 'Frame'
-  //     })
-  //   },
-  // },
 }
 </script>
 
