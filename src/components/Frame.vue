@@ -28,7 +28,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <span>王小虎</span>
+          <span>汪成飞</span>
 
         </el-header>
 
@@ -64,13 +64,22 @@
 </script>
 
 <style>
-  .el-header {
-    background-color: #B3C0D1;
-    color: #333;
-    line-height: 60px;
-  }
+#Frame {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+}
 
-  .el-aside {
-    color: #333;
-  }
+.el-header {
+  background-color: #B3C0D1;
+  color: #333;
+  line-height: 60px;
+}
+
+.el-aside {
+  color: #333;
+}
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div id='header'>
+    <div id='search_options'>
       <span>上课校区 </span>
-      <el-select v-model="campus">
+      <el-select v-model="campus" class="in">
         <el-option
           v-for="item in campuses"
           :key="item.value"
@@ -12,7 +12,7 @@
       </el-select>
       
       <span>上课星期 </span>
-      <el-select v-model="day">
+      <el-select v-model="day" class="in">
         <el-option
           v-for="item in days"
           :key="item.value"
@@ -22,7 +22,7 @@
       </el-select>
 
       <span>开课院系 </span>
-      <el-select v-model="department">
+      <el-select v-model="department" class="in">
         <el-option
           v-for="item in departments"
           :key="item.value"
@@ -30,30 +30,59 @@
           :value="item.value">
         </el-option>
       </el-select>
+      <br/>
 
       <span>课程号</span>
       <el-input
         v-model="cour_id"
+        class="in"
+        size="medium"
         clearable>
       </el-input>
 
       <span>课序号</span>
       <el-input
         v-model="curr_id"
+        class="in"
+        size="medium"
         clearable>
       </el-input>
 
       <span>教师名</span>
       <el-input
+        size="medium"
+        class="in"
         v-model="lect_id"
         clearable>
       </el-input>
 
+      <br/>
       <span>只看有课余量的课程</span>
       <el-switch v-model="redundantOnly">
       </el-switch>
 
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="upload">搜索</el-button>
+    </div>
+
+    <div id='result_list'>
+      <el-table :data="departmentTable" style="width: 100%" row-key="id">
+                <!-- <el-table-column prop="id" label="ID" ></el-table-column> -->
+                <el-table-column prop="name" label="名称" ></el-table-column>
+                <el-table-column fixed="right" label="操作" >
+                    <template #default="scope">
+                        <el-button @click="edit(scope.row)" type="text" size="small">修改</el-button>
+                        <el-button @click="deleteDepartment(scope.row)" type="text" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                background
+                layout="prev, pager, next"
+                class="pagination"
+                :page-size="pageSize"
+                :total="total"
+                @current-change="pageChange"
+            ></el-pagination>
     </div>
   </div>
 </template>
@@ -119,25 +148,29 @@ export default {
       },],
       department: "*",
 
-      cour_id: "",
-      curr_id: "",
-      lect_id: "",
+      cour_id: '',
+      curr_id: '',
+      lect_id: '',
       redundantOnly : true,
       loading: true
     }
   },
-  setup() {
-    const upload = (()=>{
+  methods:{
+    upload :function(){
       console.log(this.cour_id);
-    }) 
-    return{
-      upload,
+      console.log(this.curr_id);
+      console.log(this.redundantOnly);
     }
+  },
+  setup() {
   }
 }
 
 </script>
 
 <style>
-
+.in{
+    width: 20%;
+    margin: 20px;
+}
 </style>
