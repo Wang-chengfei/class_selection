@@ -41,6 +41,10 @@ const routes = [
         path: '/changePwd',
         name: 'ChangePwd',
         component: () => import("@/components/ChangePwd")
+      },{
+        path: '/queryScore',
+        name: 'QueryScore',
+        component: () => import("@/components/QueryScore")
       },
     ]
   }
