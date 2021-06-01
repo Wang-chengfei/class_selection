@@ -24,10 +24,10 @@
             <el-menu-item index="2-1" @click="changePage('QueryScore')"
               >成绩查询</el-menu-item
             >
-            <el-menu-item index="2-2" @click="changePage('ChangeInfo')"
+            <el-menu-item index="2-2" @click="changePage('StudentChangeInfo')"
               >修改信息</el-menu-item
             >
-            <el-menu-item index="2-3" @click="changePage('ChangePwd')"
+            <el-menu-item index="2-3" @click="changePage('StudentChangePwd')"
               >修改密码</el-menu-item
             >
           </el-submenu>
@@ -46,7 +46,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <span id="stud_name"> {{stud_name}} </span>
+          <span id="stud_name"> {{ stud_name }} </span>
         </el-header>
 
         <el-main>
@@ -67,7 +67,7 @@ export default {
     };
   },
   mounted() {
-    this.stud_name = this.$root.stud_name
+    this.stud_name = this.$root.stud_name;
   },
   setup() {
     const router = useRouter();

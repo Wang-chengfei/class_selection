@@ -15,7 +15,7 @@
       <!-- 登录信息填写 -->
       <div class="infoBox">
         <span>账号</span>
-        <el-input v-model="stud_id" class="in_login" size="medium"> </el-input>
+        <el-input v-model="id" class="in_login" size="medium"> </el-input>
       </div>
 
       <div class="infoBox">
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       identity: "学生",
-      stud_id: "",
+      id: "",
       passwd: "",
       verify: "",
     };
@@ -50,7 +50,7 @@ export default {
       if (this.identity == "学生") {
         axios
           .post("http://muzi.fun:4455/class_selection/student/login", {
-            stud_id: this.stud_id,
+            stud_id: this.id,
             passwd: this.passwd,
           })
           .then(function (response) {
@@ -58,7 +58,7 @@ export default {
             if (that.verify == false) {
               ElMessage.error("账号或密码错误");
             } else {
-              that.$root.stud_id = that.stud_id;
+              that.$root.stud_id = that.id;
               that.$root.passwd = that.passwd;
               axios
                 .post("http://muzi.fun:4455/class_selection/student/getById", {
@@ -79,7 +79,37 @@ export default {
             console.log(error);
           });
       } else if (this.identity == "教师") {
-        console.log("教师登录");
+        axios
+          .post("http://muzi.fun:4455/class_selection/lect/login", {
+            lect_id: this.id,
+            passwd: this.passwd,
+          })
+          .then(function (response) {
+            that.verify = response.data;
+            if (that.verify == false) {
+              ElMessage.error("账号或密码错误");
+            } else {
+              that.$root.lect_id = that.id;
+              that.$root.passwd = that.passwd;
+              axios
+                .post("http://muzi.fun:4455/class_selection/lect/getById", {
+                  lect_id: that.$root.lect_id,
+                })
+                .then(function (response) {
+                  that.$root.lect_name = response.data.lect_name;
+                  console.log(that.$root.lect_name);
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+              that.$router.push({
+                name: "TeachingTable",
+              });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       } else {
         console.log("管理员登录");
       }

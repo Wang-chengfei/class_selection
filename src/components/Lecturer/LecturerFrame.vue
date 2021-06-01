@@ -9,10 +9,10 @@
           <el-submenu index="1">
             <template #title><i class="el-icon-message"></i>授课管理</template>
             <el-menu-item index="1-1" @click="changePage('TeachingTable')"
-              >选课</el-menu-item
+              >授课表</el-menu-item
             >
             <el-menu-item index="1-2" @click="changePage('StudentList')"
-              >退课</el-menu-item
+              >选课学生</el-menu-item
             >
           </el-submenu>
 
@@ -40,7 +40,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <span id="stud_name"> {{stud_name}} </span>
+          <span id="lect_name"> {{stud_name}} </span>
         </el-header>
 
         <el-main>
@@ -61,7 +61,7 @@ export default {
     };
   },
   mounted() {
-    this.stud_name = this.$root.stud_name
+    this.stud_name = this.$root.lect_name
   },
   setup() {
     const router = useRouter();
