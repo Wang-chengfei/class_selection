@@ -71,6 +71,38 @@ const routes = [
         component: () => import("@/components/Lecturer/LecturerChangePwd")
       }
     ]
+  },
+  {
+    path: '/adminFrame',
+    name: 'AdminFrame',
+    component: () => import("@/components/Admin/AdminFrame"),
+    children: [
+      {
+        path: '/manageCourse',
+        name: 'ManageCourse',
+        component : () => import("@/components/Admin/ManageCourse")
+      }, {
+        path: '/updateCourse',
+        name: 'UpdateCourse',
+        component: () => import("@/components/Admin/UpdateCourse")
+      }, {
+        path: '/courseArrange',
+        name: 'CourseArrange',
+        component: () => import("@/components/Admin/CourseArrange")
+      }, {
+        path: '/distributeCourse',
+        name: 'DistributeCourse',
+        component: () => import("@/components/Admin/DistributeCourse")
+      }, {
+        path: '/manageStudent',
+        name: 'ManageStudent',
+        component: () => import("@/components/Admin/ManageStudent")
+      },  {
+        path: '/manageTeacher',
+        name: 'ManageTeacher',
+        component: () => import("@/components/Admin/ManageTeacher")
+      },
+    ]
   }
 ];
 

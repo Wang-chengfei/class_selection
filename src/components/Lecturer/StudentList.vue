@@ -110,6 +110,10 @@ export default {
         })
         .then(function (response) {
           that.studentData = response.data;
+          console.log(that.studentData);
+          for (let i = 0; i < that.studentData.length; i++) {
+            if(that.studentData[i].grade == -1) that.studentData[i].grade = ""
+          }
         })
         .catch(function (error) {
           console.log(error);

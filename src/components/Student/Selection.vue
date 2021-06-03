@@ -70,9 +70,19 @@
     </div>
 
     <div id="result_list">
-      <el-table :data="courseData" style="width: 100%" row-key="id" border>
+      <el-table
+        :data="courseData"
+        style="width: 100%"
+        row-key="id"
+        border
+        :row-class-name="gray"
+      >
         <el-table-column prop="depa_name" label="开课院系"></el-table-column>
-        <el-table-column prop="cour_name" label="课程名" width="140"></el-table-column>
+        <el-table-column
+          prop="cour_name"
+          label="课程名"
+          width="140"
+        ></el-table-column>
         <el-table-column prop="cour_id" label="课程号"></el-table-column>
         <el-table-column prop="curr_id" label="课序号"></el-table-column>
         <el-table-column prop="credit" label="学分"></el-table-column>
@@ -86,9 +96,11 @@
           label="地点"
           width="130"
         ></el-table-column>
+        <el-table-column prop="capacity" label="已选/课容量"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template #default="scope">
             <el-button
+              class="selectButton"
               @click="selectCourse(scope.row)"
               type="text"
               size="middle"
@@ -97,14 +109,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        class="pagination"
-        :page-size="pageSize"
-        :total="total"
-        @current-change="pageChange"
-      ></el-pagination>
     </div>
   </div>
 </template>
@@ -196,15 +200,68 @@ export default {
       redundantOnly: true,
       loading: true,
       courseData: [],
+      gray_index: [],
     };
   },
   methods: {
-    upload: function () {
+    gray({ row, rowIndex }) {
+      console.log(row);
+      for (let i = 0; i < this.gray_index.length; i++) {
+        if (rowIndex == this.gray_index[i]) {
+          return "gray-row el-button--text";
+        }
+      }
+      return "";
+    },
+
+    checkCourse() {
+      let that = this;
+      axios
+        .post("http://muzi.fun:4455/class_selection/student/getClassList", {
+          stud_id: this.$root.stud_id,
+          year: 2021,
+          semester: "spring",
+        })
+        .then(function (response) {
+          for (let i = 0; i < that.courseData.length; i++) {
+            let flag = 0;
+            let stud_num = Number(that.courseData[i].capacity.split("/")[0]);
+            let capacity = Number(that.courseData[i].capacity.split("/")[1]);
+            if (stud_num >= capacity) {
+              flag = 1;
+            }
+            for (let j = 0; j < response.data.length; j++) {
+              if (
+                (that.courseData[i].cour_id == response.data[j].cour_id &&
+                  that.courseData[i].curr_id == response.data[j].curr_id &&
+                  that.courseData[i].year == response.data[j].year &&
+                  that.courseData[i].semester == response.data[j].semester) ||
+                (that.courseData[i].day == response.data[j].day &&
+                  that.courseData[i].end_class >=
+                    response.data[j].start_class &&
+                  that.courseData[i].start_class <= response.data[j].end_class)
+              ) {
+                flag = 1;
+                break;
+              }
+            }
+            if (flag == 1) {
+              that.gray_index.push(i);
+            }
+          }
+          // let select_buttons = document.querySelectorAll(".el-button");
+          // console.log(select_buttons[0]);
+          // select_buttons[0].setAttribute("disabled", true)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    upload() {
       let that = this;
       axios
         .post("http://muzi.fun:4455/class_selection/class/search", {
-          pageNum: 0,
-          pageSize: 20,
           campus: this.campus,
           day: this.day,
           depa_name: this.depa_name,
@@ -213,12 +270,15 @@ export default {
           curr_id: this.curr_id,
           lect_id: "",
           lect_name: this.lect_name,
+          year: 2021,
+          semester: "spring",
           redundantOnly: this.redundantOnly,
         })
         .then(function (response) {
-          that.courseData = response.data.list;
-          console.log(that.courseData);
+          that.courseData = response.data;
           for (let i = 0; i < that.courseData.length; i++) {
+            that.courseData[i].capacity =
+              that.courseData[i].stud_num + "/" + that.courseData[i].capacity;
             if (that.courseData[i].campus == "jiangan")
               that.courseData[i].campus = "江安";
             else if (that.courseData[i].campus == "wangjiang")
@@ -240,14 +300,15 @@ export default {
               that.courseData[i].end_class +
               "节";
           }
+          that.checkCourse();
         })
         .catch(function (error) {
           console.log(error);
         });
     },
+
     selectCourse(row) {
       let that = this;
-
       this.$confirm("是否确认要选该课程?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -269,6 +330,7 @@ export default {
             })
             .then(function (response) {
               console.log(response);
+              that.upload();
             })
             .catch(function (error) {
               console.log(error);
@@ -282,11 +344,9 @@ export default {
         });
     },
   },
+
   created() {
-    this.upload()
-    this.$root.stud_id = 2019141460541;
-    this.$root.passwd = 123456;
-    this.$root.stud_name = "hhm"
+    this.upload();
   },
 
   setup() {},
@@ -302,5 +362,10 @@ export default {
 .in_select {
   width: 17%;
   margin: 20px;
+}
+
+.el-table .gray-row {
+  color: #cecece !important;
+  pointer-events: none;
 }
 </style>

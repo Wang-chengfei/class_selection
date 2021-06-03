@@ -111,7 +111,9 @@ export default {
             console.log(error);
           });
       } else {
-        console.log("管理员登录");
+        this.$router.push({
+          name: "ManageCourse",
+        });
       }
     },
   },
