@@ -3,7 +3,7 @@
     <div id="search_options">
       <el-divider content-position="left">新增课程信息</el-divider>
       <span>开课院系</span>
-      <el-select v-model="depa_name" class="in_select">
+      <el-select v-model="depa_name" class="course_select" placeholder="请选择">
         <el-option
           v-for="item in depa_names"
           :key="item.value"
@@ -14,15 +14,15 @@
       </el-select>
 
       <span>课程名</span>
-      <el-input size="medium" class="in_select" v-model="cour_name" clearable>
+      <el-input size="medium" class="course_select" v-model="cour_name" clearable>
       </el-input>
 
       <span>课程号</span>
-      <el-input v-model="cour_id" class="in_select" size="medium" clearable>
+      <el-input v-model="cour_id" class="course_select" size="medium" clearable>
       </el-input>
 
       <span>课程类型</span>
-      <el-select v-model="type" class="in_select" placeholder="请选择">
+      <el-select v-model="type" class="course_select" placeholder="请选择">
         <el-option
           v-for="item in types"
           :key="item.value"
@@ -35,7 +35,7 @@
       <br />
 
       <span>考试类型</span>
-      <el-select v-model="exam_type" class="in_select" placeholder="请选择">
+      <el-select v-model="exam_type" class="course_select" placeholder="请选择">
         <el-option
           v-for="item in exam_types"
           :key="item.value"
@@ -46,26 +46,27 @@
       </el-select>
 
       <span>学分</span>
-      <el-input size="medium" class="in_select" v-model="credit" clearable>
+      <el-input size="medium" class="course_select" v-model="credit" clearable>
       </el-input>
 
       <span>选课限制</span>
-      <el-input size="medium" class="in_select" v-model="requirement" clearable>
+      <el-input size="medium" class="course_select" v-model="requirement" clearable>
       </el-input>
 
-      <span>教师编号</span>
-      <el-input size="medium" class="in_select" v-model="lect_id" clearable>
+      <span>先修课程</span>
+      <el-input size="medium" class="course_select" v-model="prerequisite" clearable>
       </el-input>
 
       <el-button
         type="primary"
-        icon="el-icon-search"
+        icon="el-icon-upload"
         @click="addCourse"
-        class="addCoursehButton"
+        class="addButton"
         size="small"
         >添加课程</el-button
       >
 
+      <br />
       <br />
       <br />
       <br />
@@ -81,17 +82,13 @@
         :row-class-name="gray"
       >
         <el-table-column prop="depa_name" label="开课院系"></el-table-column>
-        <el-table-column
-          prop="cour_name"
-          label="课程名"
-          width="140"
-        ></el-table-column>
+        <el-table-column prop="cour_name" label="课程名"></el-table-column>
         <el-table-column prop="cour_id" label="课程号"></el-table-column>
         <el-table-column prop="type" label="课程类型"></el-table-column>
         <el-table-column prop="exam_type" label="考查类型"></el-table-column>
         <el-table-column prop="credit" label="学分"></el-table-column>
         <el-table-column prop="requirement" label="选课限制"></el-table-column>
-        <el-table-column prop="lect_name" label="教师编号"></el-table-column>
+        <el-table-column prop="prerequisite" label="先修课程"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template #default="scope">
             <el-button
@@ -115,10 +112,6 @@ export default {
     return {
       depa_names: [
         {
-          value: "*",
-          label: "全部",
-        },
-        {
           value: "计算机学院",
           label: "计算机学院",
         },
@@ -131,7 +124,7 @@ export default {
           label: "物理学院",
         },
       ],
-      depa_name: "*",
+      depa_name: "",
       types: [
         {
           value: "必修",
@@ -162,14 +155,34 @@ export default {
       cour_id: "",
       credit: "",
       requirement: "",
-      lect_id: "",
+      prerequisite: "",
       courseData: [],
     };
   },
-  methods: {},
+  methods: {
+    addCourse() {
+      axios
+        .post("http://muzi.fun:4455/class_selection/admin/addCourse", {
+          depa_name: this.depa_name,
+          cour_name: this.cour_name,
+          cour_id: this.cour_id,
+          type: this.type,
+          exam_type: this.exam_type,
+          credit: this.credit,
+          requirement: this.requirement,
+          prerequisite: this.prerequisite,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+  },
 
   created() {
-    let that = this;
+    // let that = this;
     axios
       .post("http://muzi.fun:4455/class_selection/class/search", {
         stud_id: this.$root.stud_id,
@@ -177,34 +190,7 @@ export default {
         semester: "spring",
       })
       .then(function (response) {
-        for (let i = 0; i < that.courseData.length; i++) {
-          let flag = 0;
-          let stud_num = Number(that.courseData[i].capacity.split("/")[0]);
-          let capacity = Number(that.courseData[i].capacity.split("/")[1]);
-          if (stud_num >= capacity) {
-            flag = 1;
-          }
-          for (let j = 0; j < response.data.length; j++) {
-            if (
-              (that.courseData[i].cour_id == response.data[j].cour_id &&
-                that.courseData[i].curr_id == response.data[j].curr_id &&
-                that.courseData[i].year == response.data[j].year &&
-                that.courseData[i].semester == response.data[j].semester) ||
-              (that.courseData[i].day == response.data[j].day &&
-                that.courseData[i].end_class >= response.data[j].start_class &&
-                that.courseData[i].start_class <= response.data[j].end_class)
-            ) {
-              flag = 1;
-              break;
-            }
-          }
-          if (flag == 1) {
-            that.gray_index.push(i);
-          }
-        }
-        // let select_buttons = document.querySelectorAll(".el-button");
-        // console.log(select_buttons[0]);
-        // select_buttons[0].setAttribute("disabled", true)
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -216,13 +202,14 @@ export default {
 </script>
 
 <style>
-.addCoursehButton {
+.addButton {
   float: right;
   margin-right: 80px;
+  margin-top: 20px;
 }
 
-.in_select {
-  width: 19%;
+.course_select {
+  width: 16%;
   margin: 20px;
 }
 </style>

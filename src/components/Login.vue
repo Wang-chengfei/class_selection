@@ -111,9 +111,26 @@ export default {
             console.log(error);
           });
       } else {
-        this.$router.push({
-          name: "ManageCourse",
-        });
+        axios
+          .post("http://muzi.fun:4455/class_selection/admin/login", {
+            admi_id: this.id,
+            passwd: this.passwd,
+          })
+          .then(function (response) {
+            that.verify = response.data;
+            if (that.verify == false) {
+              ElMessage.error("账号或密码错误");
+            } else {
+              that.$root.admi_id = that.id;
+              that.$root.passwd = that.passwd;
+              that.$router.push({
+                name: "ManageCourse",
+              });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       }
     },
   },
