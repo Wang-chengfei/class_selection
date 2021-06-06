@@ -93,7 +93,6 @@
         style="width: 100%"
         row-key="id"
         border
-        :row-class-name="gray"
       >
         <el-table-column prop="depa_name" label="开课院系"></el-table-column>
         <el-table-column prop="cour_name" label="课程名"></el-table-column>
@@ -123,6 +122,7 @@
                       label="计算机学院"
                       value="计算机学院"
                     ></el-option>
+                    <el-option label="软件学院" value="软件学院"></el-option>
                     <el-option label="物理学院" value="物理学院"></el-option>
                     <el-option label="化学学院" value="化学学院"></el-option>
                   </el-select>
@@ -208,6 +208,10 @@ export default {
       formLabelWidth: "120px",
       formLabelWidth2: "120px",
       depa_names: [
+        {
+          value: "软件学院",
+          label: "软件学院",
+        },
         {
           value: "计算机学院",
           label: "计算机学院",
@@ -403,4 +407,5 @@ export default {
   width: 16%;
   margin: 20px;
 }
+
 </style>

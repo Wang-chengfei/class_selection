@@ -60,16 +60,6 @@ export default {
             } else {
               that.$root.stud_id = that.id;
               that.$root.passwd = that.passwd;
-              axios
-                .post("http://muzi.fun:4455/class_selection/student/getById", {
-                  stud_id: that.$root.stud_id,
-                })
-                .then(function (response) {
-                  that.$root.stud_name = response.data.stud_name;
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
               that.$router.push({
                 name: "Selection",
               });
@@ -91,17 +81,6 @@ export default {
             } else {
               that.$root.lect_id = that.id;
               that.$root.passwd = that.passwd;
-              axios
-                .post("http://muzi.fun:4455/class_selection/lect/getById", {
-                  lect_id: that.$root.lect_id,
-                })
-                .then(function (response) {
-                  that.$root.lect_name = response.data.lect_name;
-                  console.log(that.$root.lect_name);
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
               that.$router.push({
                 name: "TeachingTable",
               });

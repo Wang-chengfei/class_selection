@@ -5,16 +5,16 @@
         width="200px"
         style="background-color: rgb(238, 241, 246); height: 1000px"
       >
-        <el-menu :default-openeds="['1', '3']">
+        <el-menu :default-openeds="['1', '2', '3', '4']">
           <el-submenu index="1">
-            <template #title><i class="el-icon-message"></i>课程管理</template>
+            <template #title><i class="el-icon-s-management"></i>课程管理</template>
             <el-menu-item index="1-1" @click="changePage('ManageCourse')"
               >课程管理</el-menu-item
             >
           </el-submenu>
 
           <el-submenu index="2">
-            <template #title><i class="el-icon-menu"></i>授课管理</template>
+            <template #title><i class="el-icon-s-order"></i>授课管理</template>
             <el-menu-item index="2-1" @click="changePage('CourseArrange')"
               >课程安排</el-menu-item
             >
@@ -24,14 +24,14 @@
           </el-submenu>
 
           <el-submenu index="3">
-            <template #title><i class="el-icon-menu"></i>教师管理</template>
+            <template #title><i class="el-icon-s-custom"></i>教师管理</template>
             <el-menu-item index="3-1" @click="changePage('ManageTeacher')"
               >教师管理</el-menu-item
             >
           </el-submenu>
 
           <el-submenu index="4">
-            <template #title><i class="el-icon-menu"></i>学生管理</template>
+            <template #title><i class="el-icon-user-solid"></i>学生管理</template>
             <el-menu-item index="4-1" @click="changePage('ManageStudent')"
               >学生管理</el-menu-item
             >
@@ -51,7 +51,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <span id="admin_name"> {{stud_name}} </span>
+          <span id="admin_name"> {{ admin_name }} </span>
         </el-header>
 
         <el-main>
@@ -68,11 +68,11 @@ import { useRouter } from "vue-router";
 export default {
   data() {
     return {
-      admin_name: "",
+      admin_name: "管理员",
     };
   },
   mounted() {
-    this.admin_name = this.$root.admin_name
+    // this.admin_name = this.$root.admin_name
   },
   setup() {
     const router = useRouter();

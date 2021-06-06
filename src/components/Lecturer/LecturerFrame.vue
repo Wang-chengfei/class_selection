@@ -5,9 +5,9 @@
         width="200px"
         style="background-color: rgb(238, 241, 246); height: 1000px"
       >
-        <el-menu :default-openeds="['1', '3']">
+        <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
-            <template #title><i class="el-icon-message"></i>授课管理</template>
+            <template #title><i class="el-icon-date"></i>授课管理</template>
             <el-menu-item index="1-1" @click="changePage('TeachingTable')"
               >授课表</el-menu-item
             >
@@ -17,7 +17,7 @@
           </el-submenu>
 
           <el-submenu index="2">
-            <template #title><i class="el-icon-menu"></i>个人信息</template>
+            <template #title><i class="el-icon-user"></i>个人信息</template>
             <el-menu-item index="2-1" @click="changePage('LecturerChangeInfo')"
               >修改信息</el-menu-item
             >
@@ -40,7 +40,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <span id="lect_name"> {{stud_name}} </span>
+          <span id="lect_name"> {{ lect_name }} </span>
         </el-header>
 
         <el-main>
@@ -53,15 +53,27 @@
 
 
 <script>
+import axios from "axios";
 import { useRouter } from "vue-router";
 export default {
   data() {
     return {
-      stud_name: "",
+      lect_name: "",
     };
   },
+
   mounted() {
-    this.stud_name = this.$root.lect_name
+    let that = this;
+    axios
+      .post("http://muzi.fun:4455/class_selection/lect/getById", {
+        lect_id: this.$root.lect_id,
+      })
+      .then(function (response) {
+        that.lect_name = response.data.lect_name;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
   setup() {
     const router = useRouter();

@@ -5,9 +5,9 @@
         width="200px"
         style="background-color: rgb(238, 241, 246); height: 1000px"
       >
-        <el-menu :default-openeds="['1', '3']">
+        <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
-            <template #title><i class="el-icon-message"></i>选课管理</template>
+            <template #title><i class="el-icon-date"></i>选课管理</template>
             <el-menu-item index="1-1" @click="changePage('Selection')"
               >选课</el-menu-item
             >
@@ -20,7 +20,7 @@
           </el-submenu>
 
           <el-submenu index="2">
-            <template #title><i class="el-icon-menu"></i>个人信息</template>
+            <template #title><i class="el-icon-user"></i>个人信息</template>
             <el-menu-item index="2-1" @click="changePage('QueryScore')"
               >成绩查询</el-menu-item
             >
@@ -59,6 +59,7 @@
 
 
 <script>
+import axios from "axios";
 import { useRouter } from "vue-router";
 export default {
   data() {
@@ -66,8 +67,19 @@ export default {
       stud_name: "",
     };
   },
+
   mounted() {
-    this.stud_name = this.$root.stud_name;
+    let that = this
+     axios
+      .post("http://muzi.fun:4455/class_selection/student/getById", {
+        stud_id: this.$root.stud_id,
+      })
+      .then(function (response) {
+        that.stud_name = response.data.stud_name;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
   setup() {
     const router = useRouter();

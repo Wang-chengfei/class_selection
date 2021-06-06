@@ -314,9 +314,6 @@ export default {
 
   created() {
     this.queryCourse();
-    this.$root.lect_id = "01";
-    this.$root.passwd = 123456;
-    this.$root.stud_name = "杨波";
   },
   setup() {},
 };
