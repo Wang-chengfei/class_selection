@@ -11,9 +11,6 @@
             <el-menu-item index="1-1" @click="changePage('ManageCourse')"
               >课程管理</el-menu-item
             >
-            <el-menu-item index="1-2" @click="changePage('UpdateCourse')"
-              >修改课程信息</el-menu-item
-            >
           </el-submenu>
 
           <el-submenu index="2">

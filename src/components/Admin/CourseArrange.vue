@@ -4,11 +4,21 @@
       <el-divider content-position="left">新增课程安排信息</el-divider>
 
       <span>课程号</span>
-      <el-input size="medium" class="arrange_select" v-model="cour_id" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="cour_id"
+        clearable
+      >
       </el-input>
 
       <span>课序号</span>
-      <el-input size="medium" class="arrange_select" v-model="curr_id" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="curr_id"
+        clearable
+      >
       </el-input>
 
       <span>学年</span>
@@ -36,19 +46,39 @@
       <br />
 
       <span>开始周</span>
-      <el-input size="medium" class="arrange_select" v-model="start_week" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="start_week"
+        clearable
+      >
       </el-input>
 
       <span>结束周</span>
-      <el-input size="medium" class="arrange_select" v-model="end_week" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="end_week"
+        clearable
+      >
       </el-input>
 
       <span>开始节数</span>
-      <el-input size="medium" class="arrange_select" v-model="start_class" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="start_class"
+        clearable
+      >
       </el-input>
 
       <span>结束节数</span>
-      <el-input size="medium" class="arrange_select" v-model="end_class" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="end_class"
+        clearable
+      >
       </el-input>
 
       <br />
@@ -65,21 +95,36 @@
       </el-select>
 
       <span>教师编号</span>
-      <el-input size="medium" class="arrange_select" v-model="lect_id" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="lect_id"
+        clearable
+      >
       </el-input>
 
       <span>教室编号</span>
-      <el-input size="medium" class="arrange_select" v-model="room_id" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="room_id"
+        clearable
+      >
       </el-input>
 
       <span>课容量</span>
-      <el-input size="medium" class="arrange_select" v-model="capacity" clearable>
+      <el-input
+        size="medium"
+        class="arrange_select"
+        v-model="capacity"
+        clearable
+      >
       </el-input>
 
       <el-button
         type="primary"
         icon="el-icon-upload"
-        @click="addCourse"
+        @click="addCurr"
         class="addButton"
         size="small"
         >添加课程安排</el-button
@@ -103,7 +148,7 @@
         <el-table-column prop="cour_id" label="课程号"></el-table-column>
         <el-table-column prop="curr_id" label="课序号"></el-table-column>
         <el-table-column prop="year" label="学年"></el-table-column>
-        <el-table-column prop="semester" label="学期"></el-table-column>
+        <el-table-column prop="semester_face" label="学期"></el-table-column>
         <el-table-column prop="start_week" label="开始周"></el-table-column>
         <el-table-column prop="end_week" label="结束周"></el-table-column>
         <el-table-column prop="start_class" label="开始节数"></el-table-column>
@@ -116,7 +161,7 @@
           <template #default="scope">
             <el-button
               class="selectButton"
-              @click="deleteCourse(scope.row)"
+              @click="deleteCurr(scope.row)"
               type="text"
               size="middle"
               >删除</el-button
@@ -130,6 +175,7 @@
 
 <script>
 import axios from "axios";
+import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
@@ -171,55 +217,146 @@ export default {
       end_class: "",
       days: [
         {
-          value: "星期一",
+          value: "1",
           label: "星期一",
         },
         {
-          value: "星期二",
+          value: "2",
           label: "星期二",
         },
         {
-          value: "星期三",
+          value: "2",
           label: "星期三",
         },
         {
-          value: "星期四",
+          value: "4",
           label: "星期四",
         },
         {
-          value: "星期五",
+          value: "5",
           label: "星期五",
         },
         {
-          value: "星期六",
+          value: "6",
           label: "星期六",
         },
         {
-          value: "星期七",
+          value: "7",
           label: "星期七",
         },
       ],
       day: "",
       lect_id: "",
       room_id: "",
-      capacity:  ""
+      capacity: "",
+      courseData: [],
     };
   },
   methods: {
-    addCourse() {
+    getCurrList() {
+      let that = this;
       axios
-        .post("http://muzi.fun:4455/class_selection/admin/addCourse", {
-          depa_name: this.depa_name,
-          cour_name: this.cour_name,
-          cour_id: this.cour_id,
-          type: this.type,
-          exam_type: this.exam_type,
-          credit: this.credit,
-          requirement: this.requirement,
-          prerequisite: this.prerequisite,
+        .post("http://muzi.fun:4455/class_selection/class/search", {
+          campus: "*",
+          day: "*",
+          depa_name: "*",
+          cour_name: "",
+          cour_id: "",
+          curr_id: "",
+          lect_id: "",
+          lect_name: "",
+          year: 2021,
+          semester: "spring",
+          redundantOnly: "false",
+          slot_id: "",
         })
         .then(function (response) {
-          console.log(response);
+          that.courseData = response.data;
+          for (let i = 0; i < that.courseData.length; i++) {
+            if (that.courseData[i].semester == "spring")
+              that.courseData[i].semester_face = "春季学期";
+            else that.courseData[i].semester_face = "秋季学期";
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    deleteCurr(row) {
+      let that = this;
+      this.$confirm("是否确认要删除该课程安排?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          that.$message({
+            type: "success",
+            message: "删除成功",
+          });
+          axios
+            .post("http://muzi.fun:4455/class_selection/admin/dropCurriculum", {
+              cour_id: row.cour_id,
+              curr_id: row.curr_id,
+              year: row.year,
+              semester: row.semester
+            })
+            .then(function () {
+              that.getCurrList();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        })
+        .catch(() => {
+          that.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+
+    addCurr() {
+      let that = this;
+      this.slot_id =
+        "0" +
+        this.day +
+        "-" +
+        (this.start_class < 10 ? "0" + this.start_class : this.start_class) +
+        "-" +
+        (this.end_class < 10 ? "0" + this.end_class : this.end_class);
+      axios
+        .post("http://muzi.fun:4455/class_selection/admin/addCurriculum", {
+          cour_id: this.cour_id,
+          curr_id: this.curr_id,
+          year: this.year,
+          semester: this.semester,
+          start_week: this.start_week,
+          end_week: this.end_week,
+          lect_id: this.lect_id,
+          room_id: this.room_id,
+          slot_id: this.slot_id,
+          capacity: this.capacity,
+        })
+        .then(function () {
+          that.getCurrList();
+          that.cour_id = "";
+          that.curr_id = "";
+          that.year = "";
+          that.semester = "";
+          that.start_week = "";
+          that.end_week = "";
+          that.lect_id = "";
+          that.room_id = "";
+          that.day = "";
+          that.start_class = "";
+          that.end_class = "";
+          that.capacity = "";
+          ElMessage.success({
+            message: "添加成功",
+            type: "success",
+          });
         })
         .catch(function (error) {
           console.log(error);
@@ -228,19 +365,7 @@ export default {
   },
 
   created() {
-    // let that = this;
-    axios
-      .post("http://muzi.fun:4455/class_selection/class/search", {
-        stud_id: this.$root.stud_id,
-        year: 2021,
-        semester: "spring",
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    this.getCurrList();
   },
 
   setup() {},

@@ -41,7 +41,7 @@
         <el-table-column fixed="right" label="操作">
           <template #default="scope">
             <el-button @click="enterGrade(scope.row)" type="text" size="middle"
-              >登录成绩</el-button
+              >登入成绩</el-button
             >
           </template>
         </el-table-column>
@@ -57,6 +57,11 @@ export default {
     return {
       courseData: [],
       studentData: [],
+      cour_id: "",
+      curr_id: "",
+      year: 2021,
+      semester: "spring",
+      course: ""
     };
   },
   methods: {
@@ -105,14 +110,17 @@ export default {
           lect_id: this.$root.lect_id,
           cour_id: row.cour_id,
           curr_id: row.curr_id,
-          year: "2021",
-          semester: "spring",
+          year: this.year,
+          semester: this.semester,
         })
         .then(function (response) {
+          that.cour_id = row.cour_id;
+          that.curr_id = row.curr_id;
+          that.course = row;
           that.studentData = response.data;
           console.log(that.studentData);
           for (let i = 0; i < that.studentData.length; i++) {
-            if(that.studentData[i].grade == -1) that.studentData[i].grade = ""
+            if (that.studentData[i].grade == -1) that.studentData[i].grade = "";
           }
         })
         .catch(function (error) {
@@ -120,7 +128,39 @@ export default {
         });
     },
     enterGrade(row) {
-      console.log(row);
+      let that = this;
+      this.$prompt("请输入成绩", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      })
+        .then(({ value }) => {
+          console.log(value);
+          axios
+            .post("http://muzi.fun:4455/class_selection/lect/setGrade", {
+              cour_id: that.cour_id,
+              curr_id: that.curr_id,
+              year: that.year,
+              semester: that.semester,
+              stud_id: row.stud_id,
+              grade: value,
+            })
+            .then(function () {
+              that.$message({
+                type: "success",
+                message: "登入成功",
+              });
+              that.checkStudent(that.course)
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入",
+          });
+        });
     },
   },
   created() {

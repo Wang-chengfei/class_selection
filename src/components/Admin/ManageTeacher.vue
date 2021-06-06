@@ -3,7 +3,11 @@
     <div id="search_options">
       <el-divider content-position="left">新增教师信息</el-divider>
       <span>所在院系</span>
-      <el-select v-model="depa_name" class="teacher_select" placeholder="请选择">
+      <el-select
+        v-model="depa_name"
+        class="teacher_select"
+        placeholder="请选择"
+      >
         <el-option
           v-for="item in depa_names"
           :key="item.value"
@@ -20,21 +24,27 @@
       <br />
 
       <span>教师编号</span>
-      <el-input size="medium" class="teacher_select" v-model="lect_id" clearable>
+      <el-input
+        size="medium"
+        class="teacher_select"
+        v-model="lect_id"
+        clearable
+      >
       </el-input>
 
       <span>教师姓名</span>
-      <el-input size="medium" class="teacher_select" v-model="lect_name" clearable>
-      </el-input>
-
-      <span>登录密码</span>
-      <el-input size="medium" class="teacher_select" v-model="passwd" clearable>
+      <el-input
+        size="medium"
+        class="teacher_select"
+        v-model="lect_name"
+        clearable
+      >
       </el-input>
 
       <el-button
         type="primary"
         icon="el-icon-upload"
-        @click="addCourse"
+        @click="addLect"
         class="addButton"
         size="small"
         >添加教师</el-button
@@ -57,7 +67,6 @@
         <el-table-column prop="major" label="专业"></el-table-column>
         <el-table-column prop="lect_id" label="教师编号"></el-table-column>
         <el-table-column prop="lect_name" label="教师姓名"></el-table-column>
-        <el-table-column prop="passwd" label="登录密码"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template #default="scope">
             <el-button
@@ -76,6 +85,7 @@
 
 <script>
 import axios from "axios";
+import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
@@ -97,22 +107,78 @@ export default {
       major: "",
       lect_id: "",
       lect_name: "",
-      passwd: "",
+      passwd: "123465",
       LectData: [],
     };
   },
   methods: {
-    addCourse() {
+    getLectList() {
+      let that = this;
       axios
-        .post("http://muzi.fun:4455/class_selection/admin/addCourse", {
-          depa_name: this.depa_name,
-          major: this.major,
-          lect_id: this.lect_id,
-          lect_name: this.lect_name,
-          passwd: this.passwd,
+        .post("http://muzi.fun:4455/class_selection/admin/getLecturerList", {
+          depa_name: "*",
+          major: "*",
         })
         .then(function (response) {
-          console.log(response);
+          that.LectData = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    deleteLect(row) {
+      let that = this;
+      this.$confirm("是否确认要删除该教师?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          that.$message({
+            type: "success",
+            message: "删除成功",
+          });
+          axios
+            .post("http://muzi.fun:4455/class_selection/admin/dropLecturer", {
+              lect_id: row.lect_id,
+            })
+            .then(function () {
+              that.getLectList();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        })
+        .catch(() => {
+          that.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+
+    addLect() {
+      let that = this;
+      axios
+        .post("http://muzi.fun:4455/class_selection/admin/addLecturer", {
+          lect_id: this.lect_id,
+          depa_name: this.depa_name,
+          lect_name: this.lect_name,
+          passwd: this.passwd,
+          major: this.major,
+        })
+        .then(function () {
+          that.getLectList();
+          that.lect_id = "";
+          that.depa_name = "";
+          that.lect_name = "";
+          that.passwd = "";
+          that.major = "";
+          ElMessage.success({
+            message: "添加成功",
+            type: "success",
+          });
         })
         .catch(function (error) {
           console.log(error);
@@ -121,19 +187,7 @@ export default {
   },
 
   created() {
-    // let that = this;
-    axios
-      .post("http://muzi.fun:4455/class_selection/class/search", {
-        stud_id: this.$root.stud_id,
-        year: 2021,
-        semester: "spring",
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    this.getLectList();
   },
 
   setup() {},
@@ -148,7 +202,7 @@ export default {
 }
 
 .teacher_select {
-  width: 17%;
-  margin: 20px;
+  width: 19%;
+  margin: 25px;
 }
 </style>
