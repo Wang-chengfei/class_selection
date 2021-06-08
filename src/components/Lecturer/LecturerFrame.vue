@@ -5,29 +5,30 @@
         width="200px"
         style="background-color: rgb(238, 241, 246); height: 1000px"
       >
-        <el-menu :default-openeds="['1', '3']">
+        <el-menu :default-openeds="['1', '2', '3']">
           <el-submenu index="1">
-            <template #title><i class="el-icon-message"></i>选课管理</template>
-            <el-menu-item index="1-1" @click="changePage('Selection')"
-              >选课</el-menu-item
+            <template #title><i class="el-icon-date"></i>授课管理</template>
+            <el-menu-item index="1-1" @click="changePage('TeachingTable')"
+              >授课表</el-menu-item
             >
-            <el-menu-item index="1-2" @click="changePage('Drop')"
-              >退课</el-menu-item
-            >
-            <el-menu-item index="1-3" @click="changePage('History')"
-              >历年课表</el-menu-item
+            <el-menu-item index="1-2" @click="changePage('StudentList')"
+              >选课学生</el-menu-item
             >
           </el-submenu>
 
           <el-submenu index="2">
-            <template #title><i class="el-icon-menu"></i>个人信息</template>
-            <el-menu-item index="2-1" @click="changePage('QueryScore')"
-              >成绩查询</el-menu-item
+            <template #title><i class="el-icon-user"></i>指导管理</template>
+            <el-menu-item index="2-1" @click="changePage('LecturerManageAdvisor')"
+              >指导管理</el-menu-item
             >
-            <el-menu-item index="2-2" @click="changePage('ChangeInfo')"
+          </el-submenu>
+
+          <el-submenu index="3">
+            <template #title><i class="el-icon-user"></i>个人信息</template>
+            <el-menu-item index="3-1" @click="changePage('LecturerChangeInfo')"
               >修改信息</el-menu-item
             >
-            <el-menu-item index="2-3" @click="changePage('ChangePwd')"
+            <el-menu-item index="3-2" @click="changePage('LecturerChangePwd')"
               >修改密码</el-menu-item
             >
           </el-submenu>
@@ -46,7 +47,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <span id="stud_name"> {{stud_name}} </span>
+          <span id="lect_name"> {{ lect_name }} </span>
         </el-header>
 
         <el-main>
@@ -59,15 +60,27 @@
 
 
 <script>
+import axios from "axios";
 import { useRouter } from "vue-router";
 export default {
   data() {
     return {
-      stud_name: "",
+      lect_name: "",
     };
   },
+
   mounted() {
-    this.stud_name = this.$root.stud_name
+    let that = this;
+    axios
+      .post("http://muzi.fun:4455/class_selection/lect/getById", {
+        lect_id: this.$root.lect_id,
+      })
+      .then(function (response) {
+        that.lect_name = response.data.lect_name;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
   setup() {
     const router = useRouter();

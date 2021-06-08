@@ -66,7 +66,11 @@
     <div id="course_list">
       <el-table :data="courseData" style="width: 100%" row-key="id" border>
         <el-table-column prop="depa_name" label="开课院系"></el-table-column>
-        <el-table-column prop="cour_name" label="课程名" width="140"></el-table-column>
+        <el-table-column
+          prop="cour_name"
+          label="课程名"
+          width="140"
+        ></el-table-column>
         <el-table-column prop="cour_id" label="课程号"></el-table-column>
         <el-table-column prop="curr_id" label="课序号"></el-table-column>
         <el-table-column prop="credit" label="学分"></el-table-column>
@@ -75,7 +79,11 @@
         <el-table-column prop="requirement" label="选课限制"></el-table-column>
         <el-table-column prop="lect_name" label="教师"></el-table-column>
         <el-table-column prop="time" label="时间" width="160"></el-table-column>
-        <el-table-column prop="location" label="地点" width="130"></el-table-column>
+        <el-table-column
+          prop="location"
+          label="地点"
+          width="130"
+        ></el-table-column>
       </el-table>
     </div>
   </div>
@@ -87,128 +95,7 @@ export default {
   data() {
     return {
       courseData: [],
-      courseTable: [
-        {
-          section: 1,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 2,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 3,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 4,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 5,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 6,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 7,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 8,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 9,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 10,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 11,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-        {
-          section: 12,
-          sunday: "",
-          monday: "",
-          tuesday: "",
-          wednesday: "",
-          thursday: "",
-          friday: "",
-          saturday: "",
-        },
-      ],
+      courseTable: [],
       years: [
         {
           value: 2018,
@@ -251,6 +138,128 @@ export default {
           semester: this.semester,
         })
         .then(function (response) {
+          that.courseTable = [
+            {
+              section: 1,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 2,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 3,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 4,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 5,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 6,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 7,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 8,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 9,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 10,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 11,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+            {
+              section: 12,
+              sunday: "",
+              monday: "",
+              tuesday: "",
+              wednesday: "",
+              thursday: "",
+              friday: "",
+              saturday: "",
+            },
+          ];
           console.log(response.data);
           that.courseData = response.data;
           for (let i = 0; i < that.courseData.length; i++) {
@@ -268,7 +277,8 @@ export default {
               "-" +
               that.courseData[i].end_week +
               "周 " +
-              that.courseData[i].day + " " +
+              that.courseData[i].day +
+              " " +
               that.courseData[i].start_class +
               "-" +
               that.courseData[i].end_class +
