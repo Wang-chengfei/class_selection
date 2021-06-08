@@ -5,7 +5,7 @@
         width="200px"
         style="background-color: rgb(238, 241, 246); height: 1000px"
       >
-        <el-menu :default-openeds="['1', '2']">
+        <el-menu :default-openeds="['1', '2', '3']">
           <el-submenu index="1">
             <template #title><i class="el-icon-date"></i>授课管理</template>
             <el-menu-item index="1-1" @click="changePage('TeachingTable')"
@@ -17,11 +17,18 @@
           </el-submenu>
 
           <el-submenu index="2">
+            <template #title><i class="el-icon-user"></i>指导管理</template>
+            <el-menu-item index="2-1" @click="changePage('LecturerManageAdvisor')"
+              >指导管理</el-menu-item
+            >
+          </el-submenu>
+
+          <el-submenu index="3">
             <template #title><i class="el-icon-user"></i>个人信息</template>
-            <el-menu-item index="2-1" @click="changePage('LecturerChangeInfo')"
+            <el-menu-item index="3-1" @click="changePage('LecturerChangeInfo')"
               >修改信息</el-menu-item
             >
-            <el-menu-item index="2-2" @click="changePage('LecturerChangePwd')"
+            <el-menu-item index="3-2" @click="changePage('LecturerChangePwd')"
               >修改密码</el-menu-item
             >
           </el-submenu>

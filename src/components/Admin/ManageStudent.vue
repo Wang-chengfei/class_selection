@@ -113,6 +113,10 @@ export default {
     return {
       depa_names: [
         {
+          value: "软件学院",
+          label: "软件学院",
+        },
+        {
           value: "计算机学院",
           label: "计算机学院",
         },

@@ -33,7 +33,12 @@ const routes = [
         path: '/history',
         name: 'History',
         component: () => import("@/components/Student/History")
-      },{
+      },
+      {
+        path: '/studentManageAdvisor',
+        name: 'StudentManageAdvisor',
+        component: () => import("@/components/Student/StudentManageAdvisor")
+      }, {
         path: '/studentChangeInfo',
         name: 'StudentChangeInfo',
         component: () => import("@/components/Student/StudentChangeInfo")
@@ -61,7 +66,12 @@ const routes = [
         path: '/studentList',
         name: 'StudentList',
         component: () => import("@/components/Lecturer/StudentList")
-      }, {
+      },
+      {
+        path: '/lecturerManageAdvisor',
+        name: 'LecturerManageAdvisor',
+        component: () => import("@/components/Lecturer/LecturerManageAdvisor")
+      },{
         path: '/lecturerChangeInfo',
         name: 'LecturerChangeInfo',
         component: () => import("@/components/Lecturer/LecturerChangeInfo")
