@@ -96,10 +96,6 @@ const routes = [
         name: 'CourseArrange',
         component: () => import("@/components/Admin/CourseArrange")
       }, {
-        path: '/distributeCourse',
-        name: 'DistributeCourse',
-        component: () => import("@/components/Admin/DistributeCourse")
-      }, {
         path: '/manageStudent',
         name: 'ManageStudent',
         component: () => import("@/components/Admin/ManageStudent")

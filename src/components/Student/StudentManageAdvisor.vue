@@ -41,7 +41,7 @@
 
       <el-button
         type="primary"
-        icon="el-icon-search"
+        icon="el-icon-upload"
         @click="addAdvisor"
         class="addButton"
         size="small"

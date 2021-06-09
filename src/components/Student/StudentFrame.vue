@@ -20,7 +20,7 @@
           </el-submenu>
 
           <el-submenu index="2">
-            <template #title><i class="el-icon-user"></i>指导管理</template>
+            <template #title><i class="el-icon-edit"></i>指导管理</template>
             <el-menu-item index="2-1" @click="changePage('StudentManageAdvisor')"
               >指导管理</el-menu-item>
           </el-submenu>

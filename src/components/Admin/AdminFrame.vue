@@ -18,9 +18,6 @@
             <el-menu-item index="2-1" @click="changePage('CourseArrange')"
               >课程安排</el-menu-item
             >
-            <el-menu-item index="2-2" @click="changePage('DistributeCourse')"
-              >预置课表</el-menu-item
-            >
           </el-submenu>
 
           <el-submenu index="3">

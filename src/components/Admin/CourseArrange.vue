@@ -129,11 +129,40 @@
         size="small"
         >添加课程安排</el-button
       >
-
+      
       <br />
       <br />
       <br />
       <br />
+      <el-divider content-position="left">筛选条件</el-divider>
+      <span>学年</span>
+      <el-select v-model="this_year" class="arrange_select" placeholder="请选择">
+        <el-option
+          v-for="item in years"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+      <span>学期</span>
+      <el-select v-model="this_semester" class="arrange_select" placeholder="请选择">
+        <el-option
+          v-for="item in semesters"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+      <el-button
+        type="primary"
+        icon="el-icon-search"
+        @click="getCurrList"
+        class="searchButton"
+        size="small"
+        >搜索</el-button
+      >
       <el-divider content-position="left">所有课程安排</el-divider>
     </div>
 
@@ -245,6 +274,8 @@ export default {
           label: "星期七",
         },
       ],
+      this_year: 2021,
+      this_semester: "spring",
       day: "",
       lect_id: "",
       room_id: "",
@@ -265,13 +296,14 @@ export default {
           curr_id: "",
           lect_id: "",
           lect_name: "",
-          year: 2021,
-          semester: "spring",
+          year: this.this_year,
+          semester: this.this_semester,
           redundantOnly: "false",
           slot_id: "",
         })
         .then(function (response) {
           that.courseData = response.data;
+          console.log(that.courseData);
           for (let i = 0; i < that.courseData.length; i++) {
             if (that.courseData[i].semester == "spring")
               that.courseData[i].semester_face = "春季学期";
